@@ -93,7 +93,7 @@ routes.get('/delete/:id', (req, res)=>{
         _id: req.params.id
     }
 
-    Post.remove(query, (err, post)=>{
+    Post.deleteOne(query, (err)=>{
         if(err){
             console.log(err);
         }
