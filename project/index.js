@@ -1,9 +1,9 @@
-const express = require('express')
-require('dotenv/config')
+const express = require('express');
+require('dotenv/config');
 //const mongoose = require('mongoose');
 const postsRouter = require('./routes/postsRouter');
 
-const app = express()
+const app = express();
 
 /* mongoose.connect('mongodb://localhost/postsDatabase');
 let db = mongoose.connection;
@@ -41,5 +41,5 @@ app.use('/posts', postsRouter);
 
 // iniciando o servidor...
 app.listen(port, ()=>{
-    console.log(`Servidor iniciado na porta ${port}`)
+    console.log(`Servidor iniciado na porta ${port}`);
 });
