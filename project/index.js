@@ -31,9 +31,13 @@ app.get('/', (req, res) => {
     });
 }); */
 
+app.get('/', (req, res)=>{
+    res.json('oiiii');
+});
+
 const port = process.env.PORT || 3000;
 
-app.use('/', postsRouter);
+app.use('/posts', postsRouter);
 
 // iniciando o servidor...
 app.listen(port, ()=>{
