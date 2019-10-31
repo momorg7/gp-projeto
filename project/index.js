@@ -11,30 +11,6 @@ const app = express();
 
 let Post = require('./models/post');
 
-/* mongoose.connect('mongodb://localhost/postsDatabase');
-let db = mongoose.connection;
-
-db.once('open', ()=>{
-    console.log('Conectado ao Mongodb');
-});
-
-db.on('error', (err)=>{
-    console.log(err);
-});
-
-app.get('/', (req, res) => {
-    // GET todos os posts
-    Post.find({}, (err, posts) => {
-        if(err){
-            console.log(err.message);
-            return;
-        }
-        else{
-            res.json(posts);
-        }
-    });
-}); */
-
 // Setar a view
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
