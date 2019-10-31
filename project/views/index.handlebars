@@ -1,7 +1,9 @@
 <h1>Post</h1>
 
-<ul>
+<ul class="list-group">
     {{#each data}}
-        <li>{{this.title}}</li>
+        <li class="list-group-item">
+            <a href='/posts/{{this._id}}'>{{this.title}}</a>
+        </li>
     {{/each}}
 </ul>

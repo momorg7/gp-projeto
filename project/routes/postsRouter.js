@@ -15,7 +15,23 @@ db.on('error', (err)=>{
     console.log(err);
 }); */
 
-routes.get('/add', (req, res) => {
+// READ ONLY
+routes.get('/:id', (req, res)=>{
+    Post.findById(req.params.id, (err, post)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        else{
+            res.render('post', {
+                post: post
+            });
+        }
+    });
+});
+
+// CREATE
+routes.get('/create', (req, res) => {
     // GET todos os posts
     Post.find({}, (err, posts) => {
         if(err){
@@ -29,7 +45,7 @@ routes.get('/add', (req, res) => {
     });
 });
 
-routes.post('/add', (req, res)=>{
+routes.post('/create', (req, res)=>{
     let post = new Post();
 
     post.title = req.body.title;
