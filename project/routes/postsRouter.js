@@ -15,7 +15,7 @@ db.on('error', (err)=>{
     console.log(err);
 }); */
 
-routes.get('/', (req, res) => {
+routes.get('/add', (req, res) => {
     // GET todos os posts
     Post.find({}, (err, posts) => {
         if(err){
@@ -23,9 +23,29 @@ routes.get('/', (req, res) => {
             return;
         }
         else{
-            res.json(posts);
+            res.render('create_post');
+            //res.json(posts);
         }
     });
+});
+
+routes.post('/add', (req, res)=>{
+    let post = new Post();
+
+    post.title = req.body.title;
+    post.author = req.body.author;
+    post.body = req.body.body;
+
+    post.save((err)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect('/');
+        }
+    });
+
+
 });
 
 module.exports = routes;

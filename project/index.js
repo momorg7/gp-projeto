@@ -2,8 +2,14 @@ const express = require('express');
 require('dotenv/config');
 //const mongoose = require('mongoose');
 const postsRouter = require('./routes/postsRouter');
+const path = require('path');
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
+let db = require('./mongoConnection');
 
 const app = express();
+
+let Post = require('./models/post');
 
 /* mongoose.connect('mongodb://localhost/postsDatabase');
 let db = mongoose.connection;
@@ -15,8 +21,6 @@ db.once('open', ()=>{
 db.on('error', (err)=>{
     console.log(err);
 });
-
-let Post = require('./models/post');
 
 app.get('/', (req, res) => {
     // GET todos os posts
@@ -31,8 +35,28 @@ app.get('/', (req, res) => {
     });
 }); */
 
+// Setar a view
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+// Bodyparser
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(bodyParser.json());
+
 app.get('/', (req, res)=>{
-    res.json('oiiii');
+    Post.find({}, (err, posts) => {
+        if(err){
+            console.log(err.message);
+            return;
+        }
+        else{
+            res.render('index', {
+                data: posts
+            });
+        }
+    });
 });
 
 const port = process.env.PORT || 3000;
