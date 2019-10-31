@@ -1,10 +1,11 @@
 const express = require('express')
 require('dotenv/config')
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+const postsRouter = require('./routes/postsRouter');
 
 const app = express()
 
-mongoose.connect('mongodb://localhost/postsDatabase');
+/* mongoose.connect('mongodb://localhost/postsDatabase');
 let db = mongoose.connection;
 
 db.once('open', ()=>{
@@ -28,9 +29,11 @@ app.get('/', (req, res) => {
             res.json(posts);
         }
     });
-});
+}); */
 
 const port = process.env.PORT || 3000;
+
+app.use('/', postsRouter);
 
 // iniciando o servidor...
 app.listen(port, ()=>{
