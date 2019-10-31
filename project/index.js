@@ -15,8 +15,19 @@ db.on('error', (err)=>{
     console.log(err);
 });
 
+let Post = require('./models/post');
+
 app.get('/', (req, res) => {
-    res.json('oiii')
+    // GET todos os posts
+    Post.find({}, (err, posts) => {
+        if(err){
+            console.log(err.message);
+            return;
+        }
+        else{
+            res.json(posts);
+        }
+    });
 });
 
 const port = process.env.PORT || 3000;
