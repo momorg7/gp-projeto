@@ -15,34 +15,10 @@ db.on('error', (err)=>{
     console.log(err);
 }); */
 
-// READ ONLY
-routes.get('/:id', (req, res)=>{
-    Post.findById(req.params.id, (err, post)=>{
-        if(err){
-            console.log(err);
-            return;
-        }
-        else{
-            res.render('post', {
-                post: post
-            });
-        }
-    });
-});
-
 // CREATE
 routes.get('/create', (req, res) => {
-    // GET todos os posts
-    Post.find({}, (err, posts) => {
-        if(err){
-            console.log(err.message);
-            return;
-        }
-        else{
-            res.render('create_post');
-            //res.json(posts);
-        }
-    });
+    console.log('oi')
+    res.render('create_post');
 });
 
 routes.post('/create', (req, res)=>{
@@ -60,8 +36,71 @@ routes.post('/create', (req, res)=>{
             res.redirect('/');
         }
     });
+});
 
+// READ ONLY
+routes.get('/:id', (req, res)=>{
+    Post.findById(req.params.id, (err, post)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        else{
+            res.render('post', {
+                post: post
+            });
+        }
+    });
+});
 
+// UPDATE
+routes.get('/edit/:id', (req, res)=>{
+    Post.findById(req.params.id, (err, post)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        else{
+            res.render('update_post', {
+                post: post
+            });
+        }
+    });
+});
+
+routes.post('/edit/:id', (req, res)=>{
+    let post = {}
+
+    post.title = req.body.title;
+    post.author = req.body.author;
+    post.body = req.body.body;
+
+    let query = {_id: req.params.id};
+
+    Post.update(query, post, (err)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect('/');
+        }
+    });
+});
+
+// DELETE
+routes.get('/delete/:id', (req, res)=>{
+    let query = {
+        _id: req.params.id
+    }
+
+    Post.remove(query, (err, post)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect('/');
+        }
+    });
 });
 
 module.exports = routes;
