@@ -7,15 +7,16 @@ module.exports = {
     },
 
     createPost: (req, res)=>{
-        let post = new Post();
-    
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-    
-        post.save((err)=>{
+        const post = {
+            title: req.body.title,
+            author: req.body.author,
+            body: req.body.author
+        }
+
+        Post.create(post, (err)=>{
             if(err){
                 console.log(err);
+                return;
             }
             else{
                 res.redirect('/');
@@ -52,12 +53,12 @@ module.exports = {
     },
 
     updatePost: (req, res)=>{
-        let post = {}
-    
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-    
+        let post = {
+            title: req.body.title,
+            author: req.body.author,
+            body: req.body.author
+        }
+ 
         let query = {_id: req.params.id};
     
         Post.update(query, post, (err)=>{
