@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv/config');
 //const mongoose = require('mongoose');
 const postsRouter = require('./routes/postsRouter');
+const usersRouter = require('./routes/usersRouter');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
@@ -40,6 +41,7 @@ app.get('/', (req, res)=>{
 const port = process.env.PORT || 3000;
 
 app.use('/posts', postsRouter);
+app.use('/users', usersRouter);
 
 // iniciando o servidor...
 app.listen(port, ()=>{

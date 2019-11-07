@@ -1,25 +1,43 @@
 const mongoose = require('mongoose');
-
-const User = mongoose.model('User');
+let User = require('../models/User'); //aaaaaaaaaaaaaaa
 
 module.exports = {
     async index(req, res) {
-        const { page = 1 } = req.query;
-       const users = await User.paginate({}, { page, limit: 10 });
+       const users = await User.find();
 
-       return res.json(users);
+       res.render('index_user', {
+           users
+       });
     },
 
     async show(req, res) {
         const user = await User.findById(req.params.id);
 
-        return res.json(user);
+        res.render('user', {
+            user
+        })
     },
 
-    async store(req, res) {
-        const user = await User.create(req.body);
+    async storeGet(req, res) {
+        res.render('create_user');
+    },
 
-        return res.json(user);
+    async storePut(req, res) {
+        const user = {
+            nome: req.body.nome,
+            email: req.body.email,
+            password: req.body.password
+        }
+
+        User.create(user, (err)=>{
+            if(err){
+                console.log(err);
+                return;
+            }
+            else{
+                res.redirect('/');
+            }
+        });
     },
 
     async update(req, res) {
