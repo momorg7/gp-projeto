@@ -7,13 +7,7 @@ module.exports = {
     },
 
     createPost: (req, res)=>{
-        const post = {
-            title: req.body.title,
-            author: req.body.author,
-            body: req.body.author
-        }
-
-        Post.create(post, (err)=>{
+        Post.create(req.body, (err)=>{
             if(err){
                 console.log(err);
                 return;
@@ -53,15 +47,7 @@ module.exports = {
     },
 
     updatePost: (req, res)=>{
-        let post = {
-            title: req.body.title,
-            author: req.body.author,
-            body: req.body.author
-        }
- 
-        let query = {_id: req.params.id};
-    
-        Post.update(query, post, (err)=>{
+        Post.findByIdAndUpdate(req.params.id, req.body, { new: true, useFindAndModify: false }, (err)=>{
             if(err){
                 console.log(err);
             }
