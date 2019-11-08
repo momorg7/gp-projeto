@@ -23,13 +23,7 @@ module.exports = {
     },
 
     async storePut(req, res) {
-        const user = {
-            nome: req.body.nome,
-            email: req.body.email,
-            password: req.body.password
-        }
-
-        User.create(user, (err)=>{
+       User.create(req.body, (err)=>{
             if(err){
                 console.log(err);
                 return;
