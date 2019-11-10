@@ -86,7 +86,8 @@ app.post('/login',
       failWithError: true
   }),
   function(req, res) {
-    res.json(req.user);
+    //res.json(req.user);
+    res.redirect('/');
   }
 ); 
 app.get('/login', (req, res)=>{

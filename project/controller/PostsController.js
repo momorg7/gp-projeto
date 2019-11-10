@@ -1,4 +1,5 @@
 let Post = require('../models/post');
+let User = require('../models/User');
 let db = require('../mongoConnection');
 
 module.exports = {
@@ -7,12 +8,19 @@ module.exports = {
     },
 
     createPost: (req, res)=>{
-        Post.create(req.body, (err)=>{
+        const post = {
+            title: req.body.title,
+            author: req.user._id,
+            body: req.body.body
+        }
+
+        Post.create(post, (err)=>{
             if(err){
                 console.log(err);
                 return;
             }
             else{
+                console.log(post);
                 res.redirect('/');
             }
         });
@@ -25,8 +33,17 @@ module.exports = {
                 return;
             }
             else{
-                res.render('post', {
-                    post: post
+                User.findById(post.author, (err, user)=>{
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+                    else{
+                        res.render('post', {
+                            post: post,
+                            authorName: user.nome
+                        });
+                    }
                 });
             }
         });
@@ -47,7 +64,12 @@ module.exports = {
     },
 
     updatePost: (req, res)=>{
-        Post.findByIdAndUpdate(req.params.id, req.body, { new: true, useFindAndModify: false }, (err)=>{
+        post = {
+            title: req.body.title,
+            body: req.body.body
+        }
+
+        Post.findByIdAndUpdate(req.params.id, post, { new: true, useFindAndModify: false }, (err)=>{
             if(err){
                 console.log(err);
             }
@@ -70,5 +92,15 @@ module.exports = {
                 res.redirect('/');
             }
         });
+    },
+
+    ensureAuthenticated: (req, res, next)=>{
+        if(req.isAuthenticated()){
+            return next();
+        }
+        else{
+            console.log('Acesso nao permitido');
+            res.redirect('/login');
+        }
     }
 }
