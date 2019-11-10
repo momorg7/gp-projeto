@@ -69,5 +69,13 @@ module.exports = {
                 res.redirect('/');
             }
         });
-    }
+    },
+
+    async loginGet(req, res){
+        res.render('login_user');
+    },
+
+    async loginPost(req, res){
+
+    },
 }

@@ -4,6 +4,8 @@ let db = require('../mongoConnection');
 let UsersController = require('../controller/UsersController');
 const routes = express.Router();
 
+// LOGIN
+routes.get('/login', UsersController.loginGet);
 // CREATE
 routes.post('/create', UsersController.storePut);
 routes.get('/create', UsersController.storeGet);
