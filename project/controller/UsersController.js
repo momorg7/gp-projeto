@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 let User = require('../models/User'); //aaaaaaaaaaaaaaa
+//const passport = require('passport');
 
 module.exports = {
     async index(req, res) {
@@ -76,6 +77,6 @@ module.exports = {
     },
 
     async loginPost(req, res){
-
+        
     },
 }

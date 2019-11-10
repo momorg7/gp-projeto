@@ -5,6 +5,7 @@ let UsersController = require('../controller/UsersController');
 const routes = express.Router();
 
 // LOGIN
+//routes.post('/login', UsersController.loginPost)
 routes.get('/login', UsersController.loginGet);
 // CREATE
 routes.post('/create', UsersController.storePut);
