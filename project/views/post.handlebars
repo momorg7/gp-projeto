@@ -3,9 +3,7 @@
 <p>{{post.body}}</p>
 <hr/>
 {{#if user}}
-    {{#if (eq post.author user._id ) }}
-        <a class="btn btn-default" href="/posts/edit/{{post._id}}">Editar</a>
-        <a class="btn btn-danger" href="/posts/delete/{{post._id}}">Apagar</a>
-    {{/if}}
+    <a class="btn btn-default" href="/posts/edit/{{post._id}}">Editar</a>
+    <a class="btn btn-danger" href="/posts/delete/{{post._id}}">Apagar</a>
 {{/if}}
 
