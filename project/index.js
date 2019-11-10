@@ -75,6 +75,11 @@ passport.deserializeUser(function(id, done) {
 });
 
 //-------------------------------
+app.get('*', (req, res, next)=>{
+    res.locals.user = req.user || null;
+    next();
+});
+
 // login users
 app.post('/login',
   passport.authenticate('local', {
@@ -88,7 +93,12 @@ app.get('/login', (req, res)=>{
     res.render('login_user');
 })
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/logout', (req, res)=>{
+    req.logout();
+    res.redirect('/login');
+});
+
+//app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res)=>{
     Post.find({}, (err, posts) => {
