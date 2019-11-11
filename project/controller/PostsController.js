@@ -39,9 +39,18 @@ module.exports = {
                         return;
                     }
                     else{
+                        let canEditAndDelete = true;
+
+                        if(req.user._id != post.author){
+                            canEditAndDelete = false;
+                        }
+
+                        console.log(canEditAndDelete);
+
                         res.render('post', {
                             post: post,
-                            authorName: user.nome
+                            authorName: user.nome,
+                            canEditAndDelete
                         });
                     }
                 });

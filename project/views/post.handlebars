@@ -3,7 +3,9 @@
 <p>{{post.body}}</p>
 <hr/>
 {{#if user}}
-    <a class="btn btn-default" href="/posts/edit/{{post._id}}">Editar</a>
-    <a class="btn btn-danger" href="/posts/delete/{{post._id}}">Apagar</a>
+    {{#if canEditAndDelete}}
+        <a class="btn btn-default" href="/posts/edit/{{post._id}}">Editar</a>
+        <a class="btn btn-danger" href="/posts/delete/{{post._id}}">Apagar</a>
+    {{/if}}
 {{/if}}
 
