@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const User = require('./models/User');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 
@@ -59,7 +60,23 @@ passport.use(new LocalStrategy({ usernameField: 'email', passwordField: 'passwor
             });
         }
         else{
-            return done(null, user);
+            bcrypt.compare(password, user.password, (err, isMatch)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    if(isMatch){
+                        return done(null, user);
+                    }
+                    else{
+                        return done(null, false, {
+                            message: 'Senha Invalida'
+                        });
+                    }
+                }
+            });
+
+            //return done(null, user);
         }
     });
 }));

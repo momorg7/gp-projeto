@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 let User = require('../models/User'); //aaaaaaaaaaaaaaa
 //const passport = require('passport');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
     async index(req, res) {
@@ -24,7 +25,28 @@ module.exports = {
     },
 
     async storePut(req, res) {
-       User.create(req.body, (err)=>{
+        const user = new User({
+            nome: req.body.nome,
+            email: req.body.email,
+            password: req.body.password
+        });
+
+        bcrypt.genSalt(10, (err, salt)=>{
+            bcrypt.hash(user.password, salt, (err, hash)=>{
+                user.password = hash;
+                user.save((err)=>{
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+                    else{
+                        res.redirect('/login');
+                    }
+                });
+            });
+        });
+
+       /* User.create(req.body, (err)=>{
             if(err){
                 console.log(err);
                 return;
@@ -32,7 +54,7 @@ module.exports = {
             else{
                 res.redirect('/');
             }
-        });
+        }); */
     },
 
     async updateGet(req, res){
