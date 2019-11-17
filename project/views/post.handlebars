@@ -2,6 +2,7 @@
 <h5>{{authorName}}</h5>
 <p>{{post.body}}</p>
 <hr/>
+
 {{#if user}}
     {{#if canEditAndDelete}}
         <a class="btn btn-default" href="/posts/edit/{{post._id}}">Editar</a>

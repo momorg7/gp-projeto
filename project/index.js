@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
+const flash = require('connect-flash');
 
 const app = express();
 
@@ -35,6 +36,8 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
+
+app.use(flash());
 
 // ---------------------------------------------------
 // Passport init
@@ -125,9 +128,40 @@ app.get('/', (req, res)=>{
             return;
         }
         else{
-            res.render('index', {
-                data: posts
-            });
+            //req.flash('msg1', 'hate');
+            if(req.query.valid === 'success' || req.query.valid === 'danger'){
+                let string = req.query.valid;
+                console.log(string);
+
+                if(string === 'success'){
+                    res.render('index', {
+                        data: posts,
+                        string,
+                        info: {
+                            type: string,
+                            message: 'Post Adicionado com sucesso'
+                        }
+                    });
+                }
+                else{
+                    res.render('index', {
+                        data: posts,
+                        string,
+                        info: {
+                            type: string,
+                            message: 'Erro ao adicionar o post'
+                        }
+                    });
+                }
+                
+            }
+            else{
+                console.log('no string');
+
+                res.render('index', {
+                    data: posts
+                });
+            }
         }
     });
 });

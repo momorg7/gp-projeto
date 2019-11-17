@@ -17,11 +17,14 @@ module.exports = {
         Post.create(post, (err)=>{
             if(err){
                 console.log(err);
-                return;
+                let result = encodeURIComponent('danger');
+                res.redirect('/?valid='+ result);
             }
             else{
                 console.log(post);
-                res.redirect('/');
+                //res.redirect('/');
+                let result = encodeURIComponent('success');
+                res.redirect('/?valid='+ result);
             }
         });
     },
@@ -46,6 +49,7 @@ module.exports = {
                         }
 
                         console.log(canEditAndDelete);
+                        //console.log(req.flash('msg1'));
 
                         res.render('post', {
                             post: post,

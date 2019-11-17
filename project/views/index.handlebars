@@ -1,5 +1,15 @@
 <h1>Post</h1>
 
+{{#if string}}
+    <div class="alert alert-{{info.type}}">
+        {{info.message}}
+    </div>
+
+    {{!-- <div class="alert alert-{{string}}">
+        
+    </div> --}}
+{{/if}}
+
 <ul class="list-group">
     {{#each data}}
         <li class="list-group-item">
