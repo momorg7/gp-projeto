@@ -5,10 +5,62 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     async index(req, res) {
-       const users = await User.find();
+       /* const users = await User.find();
 
        res.render('index_user', {
            users
+       }); */
+
+       User.find({}, (err, users)=>{
+            if(err){
+                /* console.log(err.message);
+                return; */
+                let string = req.query.valid;
+                //console.log(string);
+                let type = string.slice(0, 6);
+                let message = string.slice(6, string.length);
+
+                console.log(type);
+                console.log(message);
+
+                res.render('index_user', {
+                    users,
+                    string,
+                    info: {
+                        type,
+                        message
+                    }
+                });
+            }
+            else{
+                //req.flash('msg1', 'hate');
+                if(req.query.valid){
+                    console.log(req.query.valid);
+                    let string = req.query.valid;
+                    //console.log(string);
+                    let type = string.slice(0, 7);
+                    let message = string.slice(7, string.length);
+
+                    console.log(type);
+                    console.log(message);
+
+                    res.render('index_user', {
+                        users,
+                        string,
+                        info: {
+                            type,
+                            message
+                        }
+                    });
+                }
+                else{
+                    console.log('no string');
+
+                    res.render('index_user', {
+                        users
+                    });
+                }
+            }
        });
     },
 
@@ -37,14 +89,29 @@ module.exports = {
                 user.save((err)=>{
                     if(err){
                         console.log(err);
-                        return;
+                        let result = encodeURIComponent('dangerErro ao adicionar o Usuário');
+                        res.redirect('/?valid='+ result);
                     }
                     else{
-                        res.redirect('/login');
+                        let result = encodeURIComponent('successUsuário Adicionado com sucesso');
+                        res.redirect('/?valid='+ result);
+                        //res.redirect('/login');
                     }
                 });
             });
         });
+
+        if(err){
+            console.log(err);
+            let result = encodeURIComponent('dangerErro ao adicionar o Post');
+            res.redirect('/?valid='+ result);
+        }
+        else{
+            console.log(post);
+            //res.redirect('/');
+            let result = encodeURIComponent('successPost Adicionado com sucesso');
+            res.redirect('/?valid='+ result);
+        }
 
        /* User.create(req.body, (err)=>{
             if(err){

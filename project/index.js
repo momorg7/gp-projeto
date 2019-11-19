@@ -124,36 +124,45 @@ app.get('/logout', (req, res)=>{
 app.get('/', (req, res)=>{
     Post.find({}, (err, posts) => {
         if(err){
-            console.log(err.message);
-            return;
+            /* console.log(err.message);
+            return; */
+            let string = req.query.valid;
+            //console.log(string);
+            let type = string.slice(0, 6);
+            let message = string.slice(6, string.length);
+
+            console.log(type);
+            console.log(message);
+
+            res.render('index', {
+                data: posts,
+                string,
+                info: {
+                    type,
+                    message
+                }
+            });
         }
         else{
             //req.flash('msg1', 'hate');
-            if(req.query.valid === 'success' || req.query.valid === 'danger'){
+            if(req.query.valid){
+                console.log(req.query.valid);
                 let string = req.query.valid;
-                console.log(string);
+                //console.log(string);
+                let type = string.slice(0, 7);
+                let message = string.slice(7, string.length);
 
-                if(string === 'success'){
-                    res.render('index', {
-                        data: posts,
-                        string,
-                        info: {
-                            type: string,
-                            message: 'Post Adicionado com sucesso'
-                        }
-                    });
-                }
-                else{
-                    res.render('index', {
-                        data: posts,
-                        string,
-                        info: {
-                            type: string,
-                            message: 'Erro ao adicionar o post'
-                        }
-                    });
-                }
-                
+                console.log(type);
+                console.log(message);
+
+                res.render('index', {
+                    data: posts,
+                    string,
+                    info: {
+                        type,
+                        message
+                    }
+                });
             }
             else{
                 console.log('no string');

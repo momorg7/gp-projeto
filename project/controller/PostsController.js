@@ -17,13 +17,13 @@ module.exports = {
         Post.create(post, (err)=>{
             if(err){
                 console.log(err);
-                let result = encodeURIComponent('danger');
+                let result = encodeURIComponent('dangerErro ao adicionar o Post');
                 res.redirect('/?valid='+ result);
             }
             else{
                 console.log(post);
                 //res.redirect('/');
-                let result = encodeURIComponent('success');
+                let result = encodeURIComponent('successPost Adicionado com sucesso');
                 res.redirect('/?valid='+ result);
             }
         });
@@ -85,9 +85,15 @@ module.exports = {
         Post.findByIdAndUpdate(req.params.id, post, { new: true, useFindAndModify: false }, (err)=>{
             if(err){
                 console.log(err);
+
+                let result = encodeURIComponent('dangerErro ao atualizar o Post');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                //res.redirect('/');
+
+                let result = encodeURIComponent('successPost Atualizado com sucesso');
+                res.redirect('/?valid='+ result);
             }
         });
     },
@@ -100,9 +106,15 @@ module.exports = {
         Post.deleteOne(query, (err)=>{
             if(err){
                 console.log(err);
+
+                let result = encodeURIComponent('dangerErro ao deletar o Post');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                //res.redirect('/');
+
+                let result = encodeURIComponent('successPost Deletado com sucesso');
+                res.redirect('/?valid='+ result);
             }
         });
     },
