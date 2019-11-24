@@ -77,11 +77,11 @@ module.exports = {
     },
 
     async storePut(req, res) {
-        const user = new User({
+        const user = {
             nome: req.body.nome,
             email: req.body.email,
             password: req.body.password
-        });
+        }
 
         /* if(user.email === process.env.admin){
             User.find({ email: process.env.admin }, (err, test)=>{
@@ -96,11 +96,7 @@ module.exports = {
 
         // usuarios diferentes nao podem ter o mesmo email
         User.find({ email: user.email }, (err, result)=>{
-            if(err){
-                console.log(err);
-            }
-
-            if(result){
+            if(result !== null){
                 console.log(result);
                 console.log('Usuário já existente. At StorePut');
                 res.redirect('/login');
@@ -109,13 +105,15 @@ module.exports = {
                 bcrypt.genSalt(10, (err, salt)=>{
                     bcrypt.hash(user.password, salt, (err, hash)=>{
                         user.password = hash;
-                        user.save((err)=>{
+                        User.create(user, (err, user)=>{
+                            //console.log(user);
                             if(err){
                                 console.log(err);
                                 let result = encodeURIComponent('dangerErro ao adicionar o Usuário');
                                 res.redirect('/?valid='+ result);
                             }
                             else{
+                                //console.log(user);
                                 let result = encodeURIComponent('successUsuário Adicionado com sucesso');
                                 res.redirect('/?valid='+ result);
                                 //res.redirect('/login');

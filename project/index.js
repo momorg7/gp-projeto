@@ -176,7 +176,7 @@ app.get('/', (req, res)=>{
 });
 
 const port = process.env.PORT || 8000;
-console.log(process.env.admin);
+//console.log(process.env.admin);
 
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
