@@ -146,14 +146,14 @@ app.get('/', (req, res)=>{
         else{
             //req.flash('msg1', 'hate');
             if(req.query.valid){
-                console.log(req.query.valid);
+                //console.log(req.query.valid);
                 let string = req.query.valid;
                 //console.log(string);
                 let type = string.slice(0, 7);
                 let message = string.slice(7, string.length);
 
-                console.log(type);
-                console.log(message);
+                //console.log(type);
+                //console.log(message);
 
                 res.render('index', {
                     data: posts,
@@ -175,7 +175,8 @@ app.get('/', (req, res)=>{
     });
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
+console.log(process.env.admin);
 
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);

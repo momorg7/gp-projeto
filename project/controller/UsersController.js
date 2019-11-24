@@ -83,8 +83,23 @@ module.exports = {
             password: req.body.password
         });
 
+        /* if(user.email === process.env.admin){
+            User.find({ email: process.env.admin }, (err, test)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    console.log(test);
+                }
+            });
+        } */
+
         // usuarios diferentes nao podem ter o mesmo email
-        User.findOne(user, (result)=>{
+        User.find({ email: user.email }, (err, result)=>{
+            if(err){
+                console.log(err);
+            }
+
             if(result){
                 console.log(result);
                 console.log('Usuário já existente. At StorePut');
