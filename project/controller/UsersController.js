@@ -83,7 +83,35 @@ module.exports = {
             password: req.body.password
         });
 
-        bcrypt.genSalt(10, (err, salt)=>{
+        // usuarios diferentes nao podem ter o mesmo email
+        User.findOne(user, (result)=>{
+            if(result){
+                console.log(result);
+                console.log('Usuário já existente. At StorePut');
+                res.redirect('/login');
+            }
+            else{
+                bcrypt.genSalt(10, (err, salt)=>{
+                    bcrypt.hash(user.password, salt, (err, hash)=>{
+                        user.password = hash;
+                        user.save((err)=>{
+                            if(err){
+                                console.log(err);
+                                let result = encodeURIComponent('dangerErro ao adicionar o Usuário');
+                                res.redirect('/?valid='+ result);
+                            }
+                            else{
+                                let result = encodeURIComponent('successUsuário Adicionado com sucesso');
+                                res.redirect('/?valid='+ result);
+                                //res.redirect('/login');
+                            }
+                        }); 
+                    }); 
+                });
+            }
+        });
+
+        /* bcrypt.genSalt(10, (err, salt)=>{
             bcrypt.hash(user.password, salt, (err, hash)=>{
                 user.password = hash;
                 user.save((err)=>{
@@ -97,11 +125,11 @@ module.exports = {
                         res.redirect('/?valid='+ result);
                         //res.redirect('/login');
                     }
-                });
-            });
-        });
+                }); 
+            }); 
+        }); */
 
-        if(err){
+        /* if(err){
             console.log(err);
             let result = encodeURIComponent('dangerErro ao adicionar o Post');
             res.redirect('/?valid='+ result);
@@ -111,7 +139,7 @@ module.exports = {
             //res.redirect('/');
             let result = encodeURIComponent('successPost Adicionado com sucesso');
             res.redirect('/?valid='+ result);
-        }
+        } */
 
        /* User.create(req.body, (err)=>{
             if(err){
