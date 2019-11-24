@@ -96,7 +96,11 @@ module.exports = {
 
         // usuarios diferentes nao podem ter o mesmo email
         User.find({ email: user.email }, (err, result)=>{
-            if(result !== null){
+            if(err){
+                console.log(err);
+            }
+            
+            if(result.length !== 0){
                 console.log(result);
                 console.log('Usuário já existente. At StorePut');
                 res.redirect('/login');
