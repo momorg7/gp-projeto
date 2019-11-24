@@ -83,16 +83,21 @@ module.exports = {
             password: req.body.password
         }
 
-        /* if(user.email === process.env.admin){
-            User.find({ email: process.env.admin }, (err, test)=>{
+        if(user.email === process.env.admin){
+            User.find({ email: process.env.admin }, (err, userAdmin)=>{
                 if(err){
                     console.log(err);
                 }
                 else{
-                    console.log(test);
+                    if(userAdmin.length === 0){
+                        console.log('conta de admin nao registrada');
+                    }
+                    else{
+                        console.log('conta de admin ja registrada');
+                    }
                 }
             });
-        } */
+        }
 
         // usuarios diferentes nao podem ter o mesmo email
         User.find({ email: user.email }, (err, result)=>{
@@ -213,4 +218,29 @@ module.exports = {
     async loginPost(req, res){
         
     },
+
+    ensureAuthenticated: (req, res, next)=>{
+        if(req.isAuthenticated()){
+            const user = req.user;
+
+            if(user.email === process.env.admin){
+                next();
+            }
+            else{
+                console.log('Acesso autorizado apenas ao admin.');
+                res.redirect('/login');
+            }
+        }
+        else{
+            res.redirect('/login');
+        }
+
+        /* if(req.isAuthenticated()){
+            return next();
+        }
+        else{
+            console.log('Acesso nao permitido');
+            res.redirect('/login');
+        } */
+    }
 }

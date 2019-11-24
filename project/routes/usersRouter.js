@@ -11,10 +11,11 @@ routes.get('/login', UsersController.loginGet);
 routes.post('/create', UsersController.storePut);
 routes.get('/create', UsersController.storeGet);
 // READ
-routes.get('/', UsersController.index);
-routes.get('/:id', UsersController.show);
+routes.get('/', UsersController.ensureAuthenticated, UsersController.index);
+//routes.get('/:id', UsersController.show);
+routes.get('/:id', UsersController.ensureAuthenticated, UsersController.show);
 // UPDATE
-routes.get('/edit/:id', UsersController.updateGet);
+routes.get('/edit/:id', UsersController.ensureAuthenticated, UsersController.updateGet);
 routes.post('/edit/:id', UsersController.updatePost);
 // DELETE
 routes.get('/delete/:id', UsersController.destroy);
