@@ -1,6 +1,6 @@
 <h1>Adicionar Post</h1>
 
-<form method="POST" action="/posts/create">
+<form method="POST" action="/posts/create" encType="multipart/form-data">
     <div class="form-group">
         <label for="title">Titulo:</label><input class="form-control" name="title" type="text"/>
     </div>
@@ -8,7 +8,13 @@
         <label for="author">Autor:</label><input class="form-control" name="author" type="text"/>
     </div> -->
     <div class="form-group">
-        <label for="body">Texto:</label><textarea class="form-control" name="body"></textarea>
+        <label for="body">Texto:</label><textarea class="form-control" name="body" rows="10"></textarea>
+    </div>
+    <div class="form-group">
+        {{!-- <form action='/file/upload' method='post' encType="multipart/form-data"> --}}
+            <input type="file" name="file" />
+            {{!-- <input type='submit' value='Upload vídeo' /> --}}
+        {{!-- </form> --}}
     </div>
     <input class="btn btn-primary" type="submit"/>
 </form>
