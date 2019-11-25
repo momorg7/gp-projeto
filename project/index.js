@@ -13,6 +13,7 @@ const session = require('express-session');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 const app = express();
 
@@ -38,6 +39,19 @@ app.use(session({
 }));
 
 app.use(flash());
+
+// upload videos multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${file.fieldname}-${Date.now()}.${path.extname(file.originalname)}`);
+    }
+});
+
+const upload = multer({ storage });
+app.use(express.static('public'));
 
 // ---------------------------------------------------
 // Passport init
@@ -99,6 +113,14 @@ app.get('*', (req, res, next)=>{
     res.locals.user = req.user || null;
     next();
 });
+
+// upload videos multer
+app.get('/file/upload', (req, res)=>{
+    res.render('upload_video')
+});
+
+app.post('/file/upload', upload.single('file'), 
+    (req, res) => res.send('<h2>Upload realizado com sucesso</h2>'));
 
 // login users
 app.post('/login',
@@ -175,7 +197,7 @@ app.get('/', (req, res)=>{
     });
 });
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3000;
 //console.log(process.env.admin);
 
 app.use('/posts', postsRouter);
