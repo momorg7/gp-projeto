@@ -44,6 +44,10 @@ module.exports = {
                     else{
                         let canEditAndDelete = true;
 
+                        let title = post.title;
+
+                        
+
                         if(req.user._id != post.author){
                             canEditAndDelete = false;
                         }

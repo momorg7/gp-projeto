@@ -14,7 +14,7 @@ const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const flash = require('connect-flash');
 const multer = require('multer');
-
+const fs = require('fs');
 const app = express();
 
 let Post = require('./models/post');
@@ -121,6 +121,39 @@ app.get('/file/upload', (req, res)=>{
 
 app.post('/file/upload', upload.single('file'), 
     (req, res) => res.send('<h2>Upload realizado com sucesso</h2>'));
+
+app.get('/video/:id', function(req, res) {
+    //const path = "uploads/file-1574683442970.mp4";
+    const path = "uploads/"+req.params.id+"..mp4";
+    console.log(path)
+    const stat = fs.statSync(path)
+    const fileSize = stat.size
+    const range = req.headers.range
+    if (range) {
+        const parts = range.replace(/bytes=/, "").split("-")
+        const start = parseInt(parts[0], 10)
+        const end = parts[1] 
+        ? parseInt(parts[1], 10)
+        : fileSize-1
+        const chunksize = (end-start)+1
+        const file = fs.createReadStream(path, {start, end})
+        const head = {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': 'video/mp4',
+        }
+        res.writeHead(206, head);
+        file.pipe(res);
+    } else {
+        const head = {
+        'Content-Length': fileSize,
+        'Content-Type': 'video/mp4',
+        }
+        res.writeHead(200, head)
+        fs.createReadStream(path).pipe(res)
+    }
+});    
 
 // login users
 app.post('/login',
