@@ -1,4 +1,5 @@
 let Post = require('../models/post');
+let User = require('../models/User');
 let db = require('../mongoConnection');
 
 module.exports = {
@@ -7,18 +8,23 @@ module.exports = {
     },
 
     createPost: (req, res)=>{
-        let post = new Post();
-    
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-    
-        post.save((err)=>{
+        const post = {
+            title: req.body.title,
+            author: req.user._id,
+            body: req.body.body
+        }
+
+        Post.create(post, (err)=>{
             if(err){
                 console.log(err);
+                let result = encodeURIComponent('dangerErro ao adicionar o Post');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                console.log(post);
+                //res.redirect('/');
+                let result = encodeURIComponent('successPost Adicionado com sucesso');
+                res.redirect('/?valid='+ result);
             }
         });
     },
@@ -30,8 +36,31 @@ module.exports = {
                 return;
             }
             else{
-                res.render('post', {
-                    post: post
+                User.findById(post.author, (err, user)=>{
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+                    else{
+                        let canEditAndDelete = true;
+
+                        let title = post.title;
+
+                        
+
+                        if(req.user._id != post.author){
+                            canEditAndDelete = false;
+                        }
+
+                        console.log(canEditAndDelete);
+                        //console.log(req.flash('msg1'));
+
+                        res.render('post', {
+                            post: post,
+                            authorName: user.nome,
+                            canEditAndDelete
+                        });
+                    }
                 });
             }
         });
@@ -52,20 +81,23 @@ module.exports = {
     },
 
     updatePost: (req, res)=>{
-        let post = {}
-    
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-    
-        let query = {_id: req.params.id};
-    
-        Post.update(query, post, (err)=>{
+        post = {
+            title: req.body.title,
+            body: req.body.body
+        }
+
+        Post.findByIdAndUpdate(req.params.id, post, { new: true, useFindAndModify: false }, (err)=>{
             if(err){
                 console.log(err);
+
+                let result = encodeURIComponent('dangerErro ao atualizar o Post');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                //res.redirect('/');
+
+                let result = encodeURIComponent('successPost Atualizado com sucesso');
+                res.redirect('/?valid='+ result);
             }
         });
     },
@@ -78,10 +110,26 @@ module.exports = {
         Post.deleteOne(query, (err)=>{
             if(err){
                 console.log(err);
+
+                let result = encodeURIComponent('dangerErro ao deletar o Post');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                //res.redirect('/');
+
+                let result = encodeURIComponent('successPost Deletado com sucesso');
+                res.redirect('/?valid='+ result);
             }
         });
+    },
+
+    ensureAuthenticated: (req, res, next)=>{
+        if(req.isAuthenticated()){
+            return next();
+        }
+        else{
+            console.log('Acesso nao permitido');
+            res.redirect('/login');
+        }
     }
 }

@@ -1,0 +1,23 @@
+{
+  "name": "gp-projeto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/momorg7/gp-projeto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/momorg7/gp-projeto/issues"
+  },
+  "homepage": "https://github.com/momorg7/gp-projeto#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -1,0 +1,9 @@
+<h1>Usuários</h1>
+
+<ul class="list-group">
+    {{#each users}}
+        <li class="list-group-item">
+            <a href='/users/{{this._id}}'>{{this.nome}}</a>
+        </li>
+    {{/each}}
+</ul>

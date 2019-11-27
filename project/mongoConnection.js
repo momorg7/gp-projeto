@@ -8,7 +8,7 @@ db.once('open', ()=>{
 });
 
 db.on('error', (err)=>{
-    console.log(err);
+    console.log(err); 
 });
 
 module.exports = db;

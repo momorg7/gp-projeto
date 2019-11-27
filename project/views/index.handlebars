@@ -1,8 +1,19 @@
-<h1>Post</h1>
+<h1>Linha do Tempo</h1>
+
+{{#if string}}
+    <div class="alert alert-{{info.type}}">
+        {{info.message}}
+    </div>
+
+    {{!-- <div class="alert alert-{{string}}">
+        
+    </div> --}}
+{{/if}}
 
 <ul class="list-group">
     {{#each data}}
         <li class="list-group-item">
+            <a href='/posts/{{this._id}}'>{{post.author}}</a>
             <a href='/posts/{{this._id}}'>{{this.title}}</a>
         </li>
     {{/each}}
