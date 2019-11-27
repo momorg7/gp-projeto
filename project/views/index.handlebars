@@ -23,8 +23,15 @@
 <ul class="list-group">
     {{#each data}}
         <li class="list-group-item">
-            <a href='/posts/{{this._id}}'>{{post.author}}</a>
+            <h2>{{this.authorName}}</h2>
             <a href='/posts/{{this._id}}'>{{this.title}}</a>
+            <p class="text-justify card-subtitle text-muted text-truncate ">{{this.body}}</p>
         </li>
     {{/each}}
 </ul>
+
+<style>
+p {
+  text-overflow:"...";
+  }
+</style>
