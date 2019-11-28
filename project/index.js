@@ -124,7 +124,7 @@ app.post('/file/upload', upload.single('file'),
 
 app.get('/video/:id', function(req, res) {
     //const path = "uploads/file-1574683442970.mp4";
-    const path = "uploads/"+req.params.id+"..mp4";
+    const path = "uploads/"+req.params.id+".mp4";
     console.log(path)
     const stat = fs.statSync(path)
     const fileSize = stat.size

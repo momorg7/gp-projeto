@@ -1,6 +1,8 @@
 let Post = require('../models/post');
 let User = require('../models/User');
 let db = require('../mongoConnection');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     createGet: (req, res)=>{
@@ -42,24 +44,74 @@ module.exports = {
                         return;
                     }
                     else{
-                        let canEditAndDelete = true;
+                        let canEditAndDelete = false;
+                        let videoExists;
 
-                        let title = post.title;
+                        const videoName = `${post.title}.mp4`;
 
-                        
+                        const pathUpload = path.join(__dirname, '../', 'uploads');
+                        //console.log(pathUpload);
+                        //console.log(path.join(pathUpload, 'uploads'));
+ 
+                        /* if(fs.existsSync(pathUpload)){
+                            videoExists = true;
+                        }  */
+
+                        //console.log(videoName);
+
+                        fs.stat(path.join(pathUpload, videoName), function(err, stat) {
+                            if(err == null) {
+                                videoExists = true;
+                                console.log('Video exists');
+                                
+                            } else if(err.code === 'ENOENT') {
+                                //videoExists = false;
+                                console.log('Video nao existe');
+                            } else {
+                                console.log('Error: ', err.code);
+                            }
+
+                            if(req.user._id != post.author){
+                                canEditAndDelete = false;
+                            }
+    
+                            //console.log(canEditAndDelete);
+                            //console.log(req.flash('msg1'));
+    
+                            res.render('post', {
+                                post: post,
+                                authorName: user.nome,
+                                canEditAndDelete,
+                                videoExists
+                            });
+                        });
+
+                        /* fs.stat(path.join(pathUpload, videoName), function(err, stat) {
+                            if(err == null) {
+                                videoExists = true;
+                                console.log('Video exists');
+                                console.log(videoExists);
+                            } else if(err.code === 'ENOENT') {
+                                //videoExists = false;
+                                console.log('Video nao existe');
+                            } else {
+                                console.log('Error: ', err.code);
+                            }
+                        });
 
                         if(req.user._id != post.author){
                             canEditAndDelete = false;
                         }
 
-                        console.log(canEditAndDelete);
+                        //console.log(canEditAndDelete);
                         //console.log(req.flash('msg1'));
 
                         res.render('post', {
                             post: post,
                             authorName: user.nome,
-                            canEditAndDelete
-                        });
+                            canEditAndDelete,
+                            videoExists
+                        }); */
                     }
                 });
             }

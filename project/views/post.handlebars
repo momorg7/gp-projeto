@@ -3,9 +3,11 @@
 <p class="text-justify">{{post.body}}</p>
 <hr/>
 
-<video id="videoPlayer" controls>
-    <source src="http://localhost:3000/video/{{post.title}}" type="video/mp4">
-</video>
+{{#if videoExists}}
+    <video id="videoPlayer" controls>
+        <source src="http://localhost:3000/video/{{post.title}}" type="video/mp4">
+    </video>
+{{/if}}
 
 {{#if user}}
     {{#if canEditAndDelete}}
