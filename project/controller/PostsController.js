@@ -73,15 +73,15 @@ module.exports = {
                             } else {
                                 console.log('Error: ', err.code);
                             }
-
-                            if(req.user._id != post.author){
-                                canEditAndDelete = false;
-                            }
     
                             //console.log(canEditAndDelete);
                             //console.log(req.flash('msg1'));
 
                             Comment.find({ postId: post._id }, (err, comments)=>{
+                                if(req.user._id == post.author){
+                                    canEditAndDelete = true;
+                                }
+
                                 if(err){
                                     console.log(err);
                                 }
