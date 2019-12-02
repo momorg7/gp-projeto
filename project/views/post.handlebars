@@ -24,8 +24,8 @@
                 <p>{{this.body}}</p>
 
                 {{#if this.canEdit}}
-                    <a class="btn btn-danger btn-sm float-right" href="/posts/edit/{{post._id}}">Apagar   </a>
-                    <a class="btn btn-info btn-sm float-right" href="/posts/edit/{{post._id}}">Editar </a>
+                    <a class="btn btn-danger btn-sm float-right" href="/comments/delete/{{this._id}}">Apagar   </a>
+                    <a class="btn btn-info btn-sm float-right" href="/comments/edit/{{this._id}}">Editar </a>
                 {{/if}}
 
                 {{!-- {{#if ../canEditAndDeleteComments}}

@@ -1,0 +1,9 @@
+<h3>Editar Comentário</h3>
+
+<form action="/comments/edit/{{comment._id}}" method="POST">
+    <textarea name="body" cols="80" rows="10">{{comment.body}}</textarea>
+    {{!-- <input type="hidden" name="userId" value={{comment.authorId}}>
+    <input type="hidden" name="authorName" value={{comment.authorName}}>
+    <input type="hidden" name="postId" value={{comment.postId}}> --}}
+    <input class="btn btn-info" type="submit">
+</form>
