@@ -12,7 +12,7 @@ module.exports = {
     createPost: (req, res)=>{
         const post = {
             title: req.body.title,
-            author: req.user._id,
+            author: req.body.userId,
             body: req.body.body
         }
 

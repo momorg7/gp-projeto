@@ -16,3 +16,9 @@
     {{/if}}
 {{/if}}
 
+<form action="/comments/create" method="POST">
+    <textarea name="commentPost" cols="80" rows="10"></textarea>
+    <input type="hidden" name="userId" value={{req.user._id}}>
+    <input type="hidden" name="postId" value={{post._id}}>
+    <input class="btn btn-info" type="submit">
+</form>

@@ -3,6 +3,8 @@ require('dotenv/config');
 //const mongoose = require('mongoose');
 const postsRouter = require('./routes/postsRouter');
 const usersRouter = require('./routes/usersRouter');
+const commentsRouter = require('./routes/commentsRouter');
+
 const path = require('path');
 const exphbs = require('express-handlebars');
 let db = require('./mongoConnection');
@@ -235,6 +237,7 @@ const port = process.env.PORT || 3000;
 
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
+app.use('/comments', commentsRouter);
 
 // iniciando o servidor...
 app.listen(port, ()=>{
