@@ -22,10 +22,19 @@
             <li class="list-group-item">
                 <h5>{{this.authorName}} diz: </h5>
                 <p>{{this.body}}</p>
+
+                {{#if this.canEdit}}
+                    <a class="btn btn-danger btn-sm float-right" href="/posts/edit/{{post._id}}">Apagar   </a>
+                    <a class="btn btn-info btn-sm float-right" href="/posts/edit/{{post._id}}">Editar </a>
+                {{/if}}
+
+                {{!-- {{#if ../canEditAndDeleteComments}}
+                    <a class="btn btn-danger btn-sm float-right" href="/posts/edit/{{post._id}}">Apagar   </a>
+                    <a class="btn btn-info btn-sm float-right" href="/posts/edit/{{post._id}}">Editar </a>
+                {{/if}} --}}
             </li>
         {{/each}}
     </ul>
-    <div></div>
 {{/if}}
 
 <form action="/comments/create" method="POST">

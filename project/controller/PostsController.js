@@ -47,6 +47,7 @@ module.exports = {
                     }
                     else{
                         let canEditAndDelete = false;
+                        let canEditAndDeleteComments = [];
                         let videoExists;
                         let commentsExist;
 
@@ -82,6 +83,10 @@ module.exports = {
                                     canEditAndDelete = true;
                                 }
 
+                                /* if(req.user._id == comments.authorId){
+                                    canEditAndDeleteComments = true;
+                                } */
+
                                 if(err){
                                     console.log(err);
                                 }
@@ -91,6 +96,24 @@ module.exports = {
                                     }
                                     else{
                                         commentsExist = true;
+
+                                        /* for(comment in comments){
+                                            canEditAndDeleteComments.push(comments[comment]);
+                                            console.log(canEditAndDeleteComments)
+                                        } */
+
+                                        canEditAndDeleteComments = true;
+                                        let editArray = [];
+
+                                        for(comment in comments){
+                                            if(comments[comment].authorId == req.user._id){
+                                                comments[comment].canEdit = true;
+                                            }
+                                            else{
+                                                comments[comment].canEdit = false;
+                                            }
+                                        }
+
                                         //console.log(comments);
                                     }
 
@@ -100,7 +123,8 @@ module.exports = {
                                         canEditAndDelete,
                                         videoExists,
                                         commentsExist,
-                                        comments
+                                        comments,
+                                        canEditAndDeleteComments
                                     });
                                 }
                             });
