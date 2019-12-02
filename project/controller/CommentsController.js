@@ -6,6 +6,7 @@ module.exports = {
         //console.log(req.body);
         const comment = {
             authorId: req.user._id,
+            authorName: req.user.nome,
             postId: req.body.postId,
             body: req.body.commentPost
         }
@@ -14,8 +15,13 @@ module.exports = {
             if(err){
                 console.log(err);
             }
-
-            console.log(data);
+            else{
+                res.redirect(`/posts/${comment.postId}`);
+            }
         });
-    }   
+    },
+    
+    readGet: (req, res)=>{
+
+    }
 }

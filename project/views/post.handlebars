@@ -16,9 +16,22 @@
     {{/if}}
 {{/if}}
 
+{{#if commentsExist}}
+    <ul class="list-group">
+        {{#each comments}}
+            <li class="list-group-item">
+                <h5>{{this.authorName}} diz: </h5>
+                <p>{{this.body}}</p>
+            </li>
+        {{/each}}
+    </ul>
+    <div></div>
+{{/if}}
+
 <form action="/comments/create" method="POST">
     <textarea name="commentPost" cols="80" rows="10"></textarea>
     <input type="hidden" name="userId" value={{req.user._id}}>
+    <input type="hidden" name="authorName" value={{authorName}}>
     <input type="hidden" name="postId" value={{post._id}}>
     <input class="btn btn-info" type="submit">
 </form>

@@ -1,5 +1,6 @@
 let Post = require('../models/post');
 let User = require('../models/User');
+let Comment = require('../models/Comment');
 let db = require('../mongoConnection');
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +13,8 @@ module.exports = {
     createPost: (req, res)=>{
         const post = {
             title: req.body.title,
-            author: req.body.userId,
+            //author: req.body.userId,
+            author: req.user._id,
             body: req.body.body
         }
 
@@ -46,6 +48,7 @@ module.exports = {
                     else{
                         let canEditAndDelete = false;
                         let videoExists;
+                        let commentsExist;
 
                         const videoName = `${post.title}.mp4`;
 
@@ -77,13 +80,37 @@ module.exports = {
     
                             //console.log(canEditAndDelete);
                             //console.log(req.flash('msg1'));
+
+                            Comment.find({ postId: post._id }, (err, comments)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    if(comments.length === 0){
+                                        commentsExist = false;
+                                    }
+                                    else{
+                                        commentsExist = true;
+                                        //console.log(comments);
+                                    }
+
+                                    res.render('post', {
+                                        post: post,
+                                        authorName: user.nome,
+                                        canEditAndDelete,
+                                        videoExists,
+                                        commentsExist,
+                                        comments
+                                    });
+                                }
+                            });
     
-                            res.render('post', {
+                            /* res.render('post', {
                                 post: post,
                                 authorName: user.nome,
                                 canEditAndDelete,
                                 videoExists
-                            });
+                            }); */
                         });
 
                         /* fs.stat(path.join(pathUpload, videoName), function(err, stat) {
