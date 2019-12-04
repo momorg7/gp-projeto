@@ -3,6 +3,10 @@
 <p class="text-justify">{{post.body}}</p>
 <hr/>
 
+{{#if photoExists}}
+    <img src="http://localhost:3000/{{post.title}}.jpg" >
+{{/if}}
+
 {{#if videoExists}}
     <video id="videoPlayer" controls>
         <source src="http://localhost:3000/video/{{post.title}}" type="video/mp4">

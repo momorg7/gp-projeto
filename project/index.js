@@ -45,7 +45,8 @@ app.use(flash());
 // upload videos multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/')
+        //cb(null, 'uploads/')
+        cb(null, 'public/')
     },
     filename: function (req, file, cb) {
         cb(null, `${file.fieldname}-${Date.now()}.${path.extname(file.originalname)}`);
@@ -126,7 +127,8 @@ app.post('/file/upload', upload.single('file'),
 
 app.get('/video/:id', function(req, res) {
     //const path = "uploads/file-1574683442970.mp4";
-    const path = "uploads/"+req.params.id+".mp4";
+    //const path = "uploads/"+req.params.id+".mp4";
+    const path = "public/"+req.params.id+".mp4";
     console.log(path)
     const stat = fs.statSync(path)
     const fileSize = stat.size

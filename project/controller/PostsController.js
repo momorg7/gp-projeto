@@ -50,10 +50,13 @@ module.exports = {
                         let canEditAndDeleteComments = [];
                         let videoExists;
                         let commentsExist;
+                        let photoExists;
 
                         const videoName = `${post.title}.mp4`;
+                        const photoName = `${post.title}.jpg`;
 
-                        const pathUpload = path.join(__dirname, '../', 'uploads');
+                        //const pathUpload = path.join(__dirname, '../', 'uploads');
+                        const pathUpload = path.join(__dirname, '../', 'public');
                         //console.log(pathUpload);
                         //console.log(path.join(pathUpload, 'uploads'));
  
@@ -61,16 +64,129 @@ module.exports = {
                             videoExists = true;
                         }  */
 
-                        //console.log(videoName);
-
                         fs.stat(path.join(pathUpload, videoName), function(err, stat) {
                             if(err == null) {
                                 videoExists = true;
                                 console.log('Video exists');
-                                
+                            
+                                Comment.find({ postId: post._id }, (err, comments)=>{
+                                    if(req.user._id == post.author){
+                                        canEditAndDelete = true;
+                                    }
+    
+                                    /* if(req.user._id == comments.authorId){
+                                        canEditAndDeleteComments = true;
+                                    } */
+    
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                    else{
+                                        if(comments.length === 0){
+                                            commentsExist = false;
+                                        }
+                                        else{
+                                            commentsExist = true;
+    
+                                            /* for(comment in comments){
+                                                canEditAndDeleteComments.push(comments[comment]);
+                                                console.log(canEditAndDeleteComments)
+                                            } */
+    
+                                            canEditAndDeleteComments = true;
+                                            let editArray = [];
+    
+                                            for(comment in comments){
+                                                if(comments[comment].authorId == req.user._id){
+                                                    comments[comment].canEdit = true;
+                                                }
+                                                else{
+                                                    comments[comment].canEdit = false;
+                                                }
+                                            }
+    
+                                            //console.log(comments);
+                                        }
+    
+                                        res.render('post', {
+                                            post: post,
+                                            authorName: user.nome,
+                                            canEditAndDelete,
+                                            videoExists,
+                                            commentsExist,
+                                            comments,
+                                            canEditAndDeleteComments
+                                        });
+                                    }
+                                });    
+
                             } else if(err.code === 'ENOENT') {
                                 //videoExists = false;
                                 console.log('Video nao existe');
+
+                                fs.stat(path.join(pathUpload, photoName), function(err, stat) {
+                                    if(err == null) {
+                                        photoExists = true;
+                                        console.log('Photo exists');
+                                        
+                                    } else if(err.code === 'ENOENT') {
+                                        photoExists = false;
+                                        console.log('Photo nao existe');
+                                    } else {
+                                        console.log('Error: ', err.code);
+                                    }
+
+                                    Comment.find({ postId: post._id }, (err, comments)=>{
+                                        if(req.user._id == post.author){
+                                            canEditAndDelete = true;
+                                        }
+        
+                                        /* if(req.user._id == comments.authorId){
+                                            canEditAndDeleteComments = true;
+                                        } */
+        
+                                        if(err){
+                                            console.log(err);
+                                        }
+                                        else{
+                                            if(comments.length === 0){
+                                                commentsExist = false;
+                                            }
+                                            else{
+                                                commentsExist = true;
+        
+                                                /* for(comment in comments){
+                                                    canEditAndDeleteComments.push(comments[comment]);
+                                                    console.log(canEditAndDeleteComments)
+                                                } */
+        
+                                                canEditAndDeleteComments = true;
+                                                let editArray = [];
+        
+                                                for(comment in comments){
+                                                    if(comments[comment].authorId == req.user._id){
+                                                        comments[comment].canEdit = true;
+                                                    }
+                                                    else{
+                                                        comments[comment].canEdit = false;
+                                                    }
+                                                }
+        
+                                                //console.log(comments);
+                                            }
+        
+                                            res.render('post', {
+                                                post: post,
+                                                authorName: user.nome,
+                                                canEditAndDelete,
+                                                photoExists,
+                                                commentsExist,
+                                                comments,
+                                                canEditAndDeleteComments
+                                            });
+                                        }
+                                    });        
+                                });
                             } else {
                                 console.log('Error: ', err.code);
                             }
@@ -78,57 +194,7 @@ module.exports = {
                             //console.log(canEditAndDelete);
                             //console.log(req.flash('msg1'));
 
-                            Comment.find({ postId: post._id }, (err, comments)=>{
-                                if(req.user._id == post.author){
-                                    canEditAndDelete = true;
-                                }
-
-                                /* if(req.user._id == comments.authorId){
-                                    canEditAndDeleteComments = true;
-                                } */
-
-                                if(err){
-                                    console.log(err);
-                                }
-                                else{
-                                    if(comments.length === 0){
-                                        commentsExist = false;
-                                    }
-                                    else{
-                                        commentsExist = true;
-
-                                        /* for(comment in comments){
-                                            canEditAndDeleteComments.push(comments[comment]);
-                                            console.log(canEditAndDeleteComments)
-                                        } */
-
-                                        canEditAndDeleteComments = true;
-                                        let editArray = [];
-
-                                        for(comment in comments){
-                                            if(comments[comment].authorId == req.user._id){
-                                                comments[comment].canEdit = true;
-                                            }
-                                            else{
-                                                comments[comment].canEdit = false;
-                                            }
-                                        }
-
-                                        //console.log(comments);
-                                    }
-
-                                    res.render('post', {
-                                        post: post,
-                                        authorName: user.nome,
-                                        canEditAndDelete,
-                                        videoExists,
-                                        commentsExist,
-                                        comments,
-                                        canEditAndDeleteComments
-                                    });
-                                }
-                            });
-    
+                            
                             /* res.render('post', {
                                 post: post,
                                 authorName: user.nome,

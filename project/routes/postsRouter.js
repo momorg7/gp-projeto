@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
 
         // error first callback
-        cb(null, 'uploads/');
+        //cb(null, 'uploads/');
+        cb(null, 'public/');
     },
     filename: function (req, file, cb) {
 
