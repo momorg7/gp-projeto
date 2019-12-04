@@ -50,7 +50,27 @@ module.exports = {
             }
             else{
                 console.log('ok');
-                res.redirect(`/`);
+                res.redirect(`/posts/${req.body.postId}`);
+            }
+        });
+    },
+
+    deletePost: (req, res)=>{
+        Comment.findById(req.params.id, (err, comment)=>{
+            if(err){
+                console.log(err)
+            }
+            else{
+                const postId = comment.postId;
+
+                Comment.findByIdAndRemove(req.params.id, (err)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        res.redirect(`/posts/${postId}`);
+                    }
+                });
             }
         });
     }

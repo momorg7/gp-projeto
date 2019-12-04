@@ -83,7 +83,11 @@ module.exports = {
             password: req.body.password
         }
 
-        if(user.email === process.env.admin){
+        //console.log(user);
+
+        if(user.email == process.env.admin){
+            console.log('teste');
+
             User.find({ email: process.env.admin }, (err, userAdmin)=>{
                 if(err){
                     console.log(err);
@@ -178,7 +182,6 @@ module.exports = {
         User.findById(req.params.id, (err, user)=>{
             if(err){
                 console.log(err);
-                return;
             }
             else{
                 res.render('update_user', {
@@ -192,9 +195,13 @@ module.exports = {
         User.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err)=>{
             if(err){
                 console.log(err);
+                let result = encodeURIComponent('dangerErro ao atualizar o Usuário');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                let result = encodeURIComponent('successUsuário Atualizado com sucesso');
+                res.redirect('/?valid='+ result);
+                //res.redirect('/');
             }
         });
     },
@@ -203,10 +210,13 @@ module.exports = {
         User.findByIdAndRemove(req.params.id, (err)=>{
             if(err){
                 console.log(err);
-                return;
+                let result = encodeURIComponent('dangerErro ao apagar o Usuário');
+                res.redirect('/?valid='+ result);
             }
             else{
-                res.redirect('/');
+                let result = encodeURIComponent('successUsuário Apagado com sucesso');
+                res.redirect('/?valid='+ result);
+                //res.redirect('/');
             }
         });
     },
